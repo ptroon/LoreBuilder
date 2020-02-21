@@ -1,0 +1,20 @@
+API ENDPOINTS
+=============
+
+PREFIX
+------
+/fpa/api/v1/
+
+ENDPOINTS
+---------
+/users (GET,POST,PUT,DELETE)
+/roles (GET,POST,PUT,DELETE)
+/fortimanagers (GET,POST,PUT,DELETE)
+/changes (GET,POST,PUT,DELETE)
+/session (GET,POST,DELETE)
+/search (GET)
+/logs (GET,POST)
+
+search
+======
+/search?query=<query string>&order=<asc or desc>&sort=<column name>

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Edit User{{ title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+    {% if data %}
+    <h5 class="card-header text-white bg-secondary">Role: {{ data.role_name }} : {{ data.id }}</h5>
+    <form id="roleForm" action="{{ url_for('gui_blueprint._editrole', id=data.id) }}" method="POST" novalidate style="color: #000000;">
+    {% else %}
+    <h5 class="card-header text-white bg-secondary">New Role</h5>
+    <form id="roleForm" action="{{ url_for('gui_blueprint._editrole', id=0) }}" method="POST" novalidate style="color: #000000;">
+    {% endif %}
+
+        <table class="form-group w-75">
+          <tr>
+            <td>{{ form.hidden_tag() }}</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1">{{ form.role_name.label }}</td>
+            <td class="w-75 text-right mx-2 p-1">{{ form.role_name(size=32, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1">{{ form.role_admin.label }}</td>
+            <td class="w-75 text-right mx-2 p-1">{{ form.role_admin(class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1">{{ form.role_app_sections.label }}</td>
+            {% if form.role_admin.data == 1 %}
+            <td class="w-75 text-right mx-2 p-1">{{ form.role_app_sections(size=32, class_="form-control", readonly=True) }}</td>
+            {% else %}
+            <td class="w-75 text-right mx-2 p-1">{{ form.role_app_sections(size=32, class_="form-control") }}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1">{{ form.created_date.label }}</td>
+            <td class="w-75 text-right mx-2 p-1">{{ form.created_date(size=32, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1">{{ form.enabled.label }}</td>
+            <td class="w-75 text-right mx-2 p-1">{{ form.enabled(class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td class="p-5">{{ form.savebtn(class_="btn btn-primary button_fpa") }} <button type=button name="cancel" id="cancel" class="btn btn-primary button_fpa" onclick="location.href='{{ url_for('gui_blueprint._roles') }}'">Cancel</button>
+            {% if data.role_admin == 0 or data.role_admin == None %}
+              &nbsp;<button type=button name="cancel" id="cancel" class="btn btn-danger button_fpa" data-toggle="modal" data-target="#messageModalCenter">Delete</button>
+              {{ form.deletebtn(class_="btn btn-danger") }}
+            {% endif %}
+            </td>
+
+          </tr>
+        </table>
+    </form>
+
+
+{% endblock %}

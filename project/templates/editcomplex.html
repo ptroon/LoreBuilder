@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+{% block title %}Edit Complex{{ title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+    {% if data %}
+    <h5 class="card-header text-white bg-secondary">Complex: "{{ data.complex_name }}"</h5>
+    <form action="{{ url_for('gui_blueprint._editcomplex', id=data.id) }}" method="POST" novalidate style="color: #000000;">
+    {% else %}
+    <h5 class="card-header text-white bg-secondary">New Complex</h5>
+    <form action="{{ url_for('gui_blueprint._editcomplex', id=0) }}" method="POST" novalidate style="color: #000000;">
+    {% endif %}
+
+    {{ form.hidden_tag() }}
+
+          <div id="accordion">
+
+            <!- FIRST CARD -->
+            <div class="card m-0 p-0">
+              <div class="card-header bg-light" id="headingOne">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <h5 class="m-0">
+                        <a href="#" class="btn btn-link no-underline text-white badge badge-primary" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="button">
+                        MANDATORY DETAILS
+                        </a>
+                      </h5>
+                    </div>
+                    <div class="col-sm">
+                      {{ form.savebtn(class_="btn btn-primary button_fpa") }}
+                      <button type=button name="cancel" id="cancel" class="btn btn-primary button_fpa" onclick="location.href='{{ url_for('gui_blueprint._complexes') }}'">Cancel</button>
+
+                      {% if data %}
+                      {{ form.deletebtn(class_="btn btn-danger") }}
+                      &nbsp;<button type=button name="cancel" id="cancel" class="btn btn-danger button_fpa" data-toggle="modal" data-target="#messageModalCenter">Delete</button>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+
+                  <table class="form-group w-75">
+                  {% for field in form %}
+                   {% if field.validators %}
+                    {% if field.name in ['complex_push_start'] %}
+                    <tr>
+                      <td class="w-25 text-right mx-2 p-1 align-text-center">{{ field.label }}</td>
+                      <td class="w-75 text-left mx-2 p-1">
+                        <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        {{ field_with_help(field(class_="form-control-plaintext form-control datetimepicker-input"), field.render_kw["title"], igid="datetimepicker1") }}
+                        </div>
+                      </td>
+                    </tr>
+                    {% elif field.name in ['complex_push_end'] %}
+                    <tr>
+                      <td class="w-25 text-right mx-2 p-1 align-text-center">{{ field.label }}</td>
+                      <td class="w-75 text-left mx-2 p-1">
+                        <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                        {{ field_with_help(field(class_="form-control-plaintext form-control datetimepicker-input"), field.render_kw["title"], igid="datetimepicker2") }}
+                        </div>
+                      </td>
+                    </tr>
+                    {% elif field.name in ['complex_restrict_start'] %}
+                    <tr>
+                      <td class="w-25 text-right mx-2 p-1 align-text-center">{{ field.label }}</td>
+                      <td class="w-75 text-left mx-2 p-1">
+                        <div class="input-group date" id="datetimepicker3" data-target-input="nearest">
+                        {{ field_with_help(field(class_="form-control-plaintext form-control datetimepicker-input"), field.render_kw["title"], igid="datetimepicker3") }}
+                        </div>
+                      </td>
+                    </tr>
+                    {% elif field.name in ['complex_restrict_end'] %}
+                    <tr>
+                      <td class="w-25 text-right mx-2 p-1 align-text-center">{{ field.label }}</td>
+                      <td class="w-75 text-left mx-2 p-1">
+                        <div class="input-group date" id="datetimepicker4" data-target-input="nearest">
+                        {{ field_with_help(field(class_="form-control-plaintext form-control datetimepicker-input"), field.render_kw["title"], igid="datetimepicker4") }}
+                        </div>
+                      </td>
+                    </tr>
+                    {% else %}
+                      <tr>
+                        <td class="w-25 text-right mx-2 p-1">{{ field.label }}</td>
+                        <td class="w-75 text-left mx-2 p-1">{{ field(class_="form-control") }}</td>
+                      </tr>
+                    {% endif %}
+                   {% endif %}
+                  {% endfor %}
+                  </table>
+
+                </div>
+              </div>
+            </div>
+
+
+            <!- SECOND CARD -->
+            <div class="card m-0 p-0">
+              <div class="card-header bg-light" id="headingTwo">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-sm">
+                      <h5 class="m-0">
+                        <a href="#" class="btn btn-link no-underline text-white badge badge-primary" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseOne" role="button">
+                        OPTIONAL DETAILS
+                        </a>
+                      </h5>
+                    </div>
+                    <div class="col-sm">
+                      &nbsp;
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+
+                  <table class="form-group w-75">
+                  {% for field in form %}
+                   {% if not field.validators %}
+                    {% if field.type == 'HiddenField' or field.type == 'CSRFTokenField' or field.type == 'SubmitField' %}
+                      <span>&nbsp;</span>
+                    {% else %}
+                    <tr>
+                      <td class="w-25 text-right mx-2 p-1">{{ field.label }}</td>
+                      <td class="w-75 text-left mx-2 p-1">{{ field(class_="form-control") }}</td>
+                    </tr>
+                    {% endif %}
+                   {% endif %}
+                  {% endfor %}
+                  </table>
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+    </form>
+
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+              icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'far fa-calendar-check-o',
+                clear: 'far fa-trash',
+                close: 'far fa-times'
+              },
+              locale: 'en-gb',
+              allowInputToggle: false,
+              stepping: 5,
+              showClose: true,
+              sideBySide: false,
+              ignoreReadonly: true,
+              format: 'LT'
+            });
+        });
+
+        $(function () {
+            $('#datetimepicker2').datetimepicker({
+              icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'far fa-calendar-check-o',
+                clear: 'far fa-trash',
+                close: 'far fa-times'
+              },
+              locale: 'en-gb',
+              allowInputToggle: false,
+              stepping: 5,
+              showClose: true,
+              sideBySide: false,
+              ignoreReadonly: true,
+              format: 'LT'
+            });
+        });
+
+        $(function () {
+            $('#datetimepicker3').datetimepicker({
+              icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'far fa-calendar-check-o',
+                clear: 'far fa-trash',
+                close: 'far fa-times'
+              },
+              locale: 'en-gb',
+              allowInputToggle: false,
+              stepping: 1,
+              showClose: true,
+              sideBySide: true,
+              ignoreReadonly: true
+            });
+        });
+
+        $(function () {
+            $('#datetimepicker4').datetimepicker({
+              icons: {
+                time: 'far fa-clock',
+                date: 'far fa-calendar',
+                up: 'fas fa-arrow-up',
+                down: 'fas fa-arrow-down',
+                previous: 'fas fa-chevron-left',
+                next: 'fas fa-chevron-right',
+                today: 'far fa-calendar-check-o',
+                clear: 'far fa-trash',
+                close: 'far fa-times'
+              },
+              locale: 'en-gb',
+              allowInputToggle: false,
+              stepping: 1,
+              showClose: true,
+              sideBySide: true,
+              ignoreReadonly: true
+            });
+        });
+
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+        })
+    </script>
+
+
+{% endblock %}

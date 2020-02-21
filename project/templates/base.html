@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock %} - Firewall Booking Application</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}{{ unique_time() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-select.min.css') }}{{ unique_time() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fpa.css') }}{{ unique_time() }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/tempusdominus-bootstrap-4.css') }}{{ unique_time() }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='fontawesome5/css/all.css') }}{{ unique_time() }}">
+
+    <link href="{{ url_for('static', filename='fullcalendar/packages/core/main.css')}}" rel='stylesheet' />
+    <link href="{{ url_for('static', filename='fullcalendar/packages/daygrid/main.css')}}" rel='stylesheet' />
+
+    <link href="{{ url_for('static', filename='css/jquery.dataTables.min.css')}}" rel='stylesheet' />
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="{{ url_for('static', filename='js/jquery-3.2.1.slim.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/moment-with-locales.min.js')}}{{ unique_time() }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/tooltip.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-select.min.js')}}"></script>
+
+    <script src="{{ url_for('static', filename='js/tempusdominus-bootstrap-4.js')}}"></script>
+    <script src="{{ url_for('static', filename='fontawesome5/js/all.js')}}"></script>
+
+    <script src="{{ url_for('static', filename='fullcalendar/packages/core/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/daygrid/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/interaction/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/list/main.js')}}"></script>
+    <script src="{{ url_for('static', filename='fullcalendar/packages/timegrid/main.js')}}"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.dataTables.min.js')}}{{ unique_time() }}"></script>
+    <script src="{{ url_for('static', filename='js/booking_calendar.js')}}{{ unique_time() }}"></script>
+
+    {% block head %}
+    {% endblock %}
+  </head>
+  <body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light nav-fill">
+        <a class="navbar-brand" href="#"><h1><div class="badge badge-primary"> {{ get_name() }} </div></h1></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item font-weight-bold">
+            <a class="nav-link" href="{{ url_for('gui_blueprint._index') }}">Dashboard</a>
+          </li>
+
+          <li class="nav-item font-weight-bold">
+            <a class="nav-link" href="{{ url_for('gui_blueprint._bookings') }}">Bookings</a>
+          </li>
+
+          {% if is_admin() %}
+          <li class="nav-item dropdown font-weight-bold">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Administration
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._users') }}">Users</a>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._roles') }}">Roles</a>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._dates') }}">Dates</a>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._complexes') }}">Complexes</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._parameters') }}">Parameters</a>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._logs', counter=10) }}">System Logs</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._comms') }}">Communications</a>              
+            </div>
+          </li>
+          {% endif %}
+
+        <li class="nav-item dropdown font-weight-bold">
+           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+             Information
+           </a>
+           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+             <a class="dropdown-item" href="{{ url_for('gui_blueprint._pushdays') }}">Push Days</a>
+             <div class="dropdown-divider"></div>
+             <a class="dropdown-item" href="{{ url_for('gui_blueprint._help') }}">Usage</a>
+           </div>
+        </li>
+
+         <li class="nav-item dropdown font-weight-bold">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Logged in as<strong> {{ get_user() }}</strong>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._editprofile') }}">Profile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{{ url_for('gui_blueprint._logout') }}">Logout</a>
+            </div>
+         </li>
+
+         <li class="nav-item font-weight-bold">
+           <div class="">
+             <a class="nav-link" href="{{ url_for('gui_blueprint._search') }}">Search</a>
+           </div>
+         </li>
+       </ul>
+
+      </div>
+    </nav>
+
+    <div id="errorModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-dialog-centered ">
+
+            <!-- Modal content-->
+            <div class="modal-content alert-warning">
+                <div class="modal-body alert-warning">
+                    {% with messages = get_flashed_messages(category_filter=["warning"]) %}
+                    {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                        <div class="text-dark alert-warning" role="alert">{{ message }}</div>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="modal-footer d-flex justify-content-center flex-column alert-warning">
+                    <button type="button" class="btn btn-default button_fpa bg-secondary text-white" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal Confirmation -->
+    <div class="modal fade" id="messageModalCenter" tabindex="-1" role="dialog" aria-labelledby="messageModalCenter" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="messageModalLongTitle">Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div id="messageModalBody">Are you sure you wish to continue with the deletion?</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="submitFormDelete">Confirm</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $("#submitFormDelete").click(function() {
+            $("#deletebtn").click();
+        });
+
+        $(function () {
+          $('[data-toggle="tooltip"]').tooltip()
+        });
+
+        var messages = "{{ get_flashed_messages(category_filter=['warning']) }}";
+        if (typeof messages != 'undefined' && messages != '[]') {
+            $("#errorModal").modal();
+        };
+
+    });
+    </script>
+
+    {% with messages = get_flashed_messages(category_filter=['success']) %}
+      <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-success alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <!-- <strong>Title</strong> --> {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% macro field_with_help(field, message, colour="bg-light", igid="default") %}
+      <div class="container">
+        <div class="row">
+          <div class="input-group">
+            <div class="input-group date" id="{{ igid }}" data-target-input="nearest">
+            {{ field }}
+            <div class="input-group-append">
+              {% if colour in ('bg-warning', 'bg-light', 'bg-white') %}
+              <span class="input-group-text {{ colour }} text-dark">{{ message }}</span>
+              {% else %}
+              <span class="input-group-text {{ colour }} text-white">{{ message }}</span>
+              {% endif %}
+            </div>
+            </div>
+          </div>
+        </div>
+    {% endmacro %}
+
+    {% block content %}
+    <!-- This is where the main page content is inserted -->
+    {% endblock %}
+
+    {% block footer %}
+    <div class="alert alert-light" role="alert">
+      <small>{{ get_copyright()|safe }}</small>
+    </div>
+    {% endblock %}
+  </body>
+</html>

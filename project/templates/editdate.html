@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+{% block title %}Edit Date{{ title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+    {% if data %}
+    <h5 class="card-header text-white bg-secondary">Date: #{{ data.id }} : "{{ data.doi_name }}"</h5>
+    <form action="{{ url_for('gui_blueprint._editdate', id=data.id) }}" method="POST" novalidate class="text-center">
+    {% else %}
+    <h5 class="card-header text-white bg-secondary">New Date</h5>
+    <form action="{{ url_for('gui_blueprint._editdate', id=0) }}" method="POST" novalidate class="text-center">
+    {% endif %}
+
+        <table class="form-group w-75 align-text-top">
+          <tr>
+            <td>{{ form.hidden_tag() }}</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.doi_name.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.doi_name(class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.doi_priority.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.doi_priority(class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-top">{{ form.doi_comment.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.doi_comment(rows=10, cols=30, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-top">{{ form.doi_regions.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.doi_regions(rows=3, class_="selectpicker, form-control") }}</td>
+          </tr>
+
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.doi_start_dt.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">
+
+                <div class="container">
+                  <div class="row">
+                    <div class="input-group">
+                      <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                      {{ form.doi_start_dt(class_="form-control-plaintext form-control datetimepicker-input") }}
+
+                    <script type="text/javascript">
+                      $(function () {
+                          $('#datetimepicker1').datetimepicker({
+                            icons: {
+                              time: 'far fa-clock',
+                              date: 'far fa-calendar',
+                              up: 'fas fa-arrow-up',
+                              down: 'fas fa-arrow-down',
+                              previous: 'fas fa-chevron-left',
+                              next: 'fas fa-chevron-right',
+                              today: 'far fa-calendar-check-o',
+                              clear: 'far fa-trash',
+                              close: 'far fa-times'
+                            },
+                            locale: 'en-gb',
+                            allowInputToggle: false,
+                            minDate: moment(),
+                            stepping: 15,
+                            showClose: true,
+                            sideBySide: true,
+                            ignoreReadonly: true
+                          });
+                      });
+                    </script>
+
+                    <div class="input-group-append">
+                      <span class="input-group-text bg-info text-white">Click field to set date & time</span>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.doi_end_dt.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">
+
+              <div class="container">
+                <div class="row">
+                  <div class="input-group">
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                      {{ form.doi_end_dt(class_="form-control-plaintext form-control datetimepicker-input") }}
+
+                    <script type="text/javascript">
+                        $(function () {
+                            $('#datetimepicker2').datetimepicker({
+                              icons: {
+                                time: 'far fa-clock',
+                                date: 'far fa-calendar',
+                                up: 'fas fa-arrow-up',
+                                down: 'fas fa-arrow-down',
+                                previous: 'fas fa-chevron-left',
+                                next: 'fas fa-chevron-right',
+                                today: 'far fa-calendar-check-o',
+                                clear: 'far fa-trash',
+                                close: 'far fa-times'
+                              },
+                              locale: 'en-gb',
+                              allowInputToggle: false,
+                          		minDate: moment(),
+                          		stepping: 15,
+                              showClose: true,
+                              sideBySide: true,
+                              ignoreReadonly: true
+                            });
+                        });
+                    </script>
+                    <div class="input-group-append">
+                      <span class="input-group-text bg-info text-white">Click field to set date & time</span>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-top">{{ form.doi_locked.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ field_with_help(form.doi_locked(rows=3, class_="selectpicker, form-control"), form.doi_locked.render_kw["title"]) }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-top">{{ form.doi_hap.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ field_with_help(form.doi_hap(rows=3, class_="selectpicker, form-control"), form.doi_hap.render_kw["title"]) }}</td>
+          </tr>
+
+          <tr>
+            <td>&nbsp;</td>
+            <td class="p-5">
+             {{ form.savebtn(class_="btn btn-primary button_fpa") }} <button type=button name="cancel" id="cancel" class="btn btn-primary button_fpa" onclick="location.href='{{ url_for('gui_blueprint._dates') }}'">Cancel</button>
+             {% if data %}
+              {{ form.deletebtn(class_="btn btn-danger") }}
+              &nbsp;<button type=button name="delete" id="delete" class="btn btn-danger button_fpa" data-toggle="modal" data-target="#messageModalCenter">Delete</button>
+              {% endif %}
+            </td>
+          </tr>
+        </table>
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('.selectpicker').selectpicker();
+        })
+    </script>
+
+
+{% endblock %}

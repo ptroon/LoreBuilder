@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Changes{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid mt-3">
+  <h3>Logs</h3>
+
+  <form action="{{ url_for('gui_blueprint._logs') }}" method="GET">
+    <div class="input-group my-3">
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="param_groups">Show Entries:</label>
+      </div>
+      {{ form.log_records(class_="custom-select form-control input-lg w-25") }}
+      <div class="input-group-prepend">
+        <label class="input-group-text" for="log_records">Log File:</label>
+      </div>
+      {{ form.log_options(class_="custom-select form-control input-lg w-25") }}
+      {{ form.submit(class_="btn btn-primary button_fpa") }}
+    </div>
+  </form>
+
+
+  <script>
+    $(document).ready(function() {
+      $("#counter option[value='{{ counter }}']").prop('selected', true);
+    });
+  </script>
+
+  <script>
+    $('#log_options').on('change', function() {
+      $('#log_form').submit();
+    });
+  </script>
+
+  <table class="table table-striped">
+    <thead class="thead-light">
+      <tr>
+        <th scope="col">Record</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      {% for rec in data %}
+        {% if loop.index <= counter|int %}
+          <tr>
+            <td>{{ rec }}</td>
+          </tr>
+        {% endif %}
+      {% else %}
+        <tr><td colspan=5 class="alert alert-primary"><strong>There are no changes to view </strong></td></tr>
+      {% endfor %}
+
+    </tbody>
+  </table>
+
+
+</div>
+
+{% endblock %}

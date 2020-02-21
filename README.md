@@ -3,3 +3,6 @@ Allows you to build lore for your stories / games.  Provides tools to create tex
 
 Built using Python Flask, SQLAlchemy, WTForms and Javascript libraries
 Based on another tools used for bookings, but forked for this tool
+Database uses MySQL
+
+Written by Philip Troon

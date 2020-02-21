@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Bookings{% endblock %}
+{% block head %}
+    {{ super() }}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, calendar_options);
+
+    {% if defdate is defined %}
+    calendar.gotoDate("{{defdate}}")
+    {% endif %}
+
+    calendar.render();
+
+  });
+</script>
+
+{% endblock %}
+{% block content %}
+
+<h5 class="card-header text-white bg-secondary">Bookings</h5>
+
+<div class="container-fluid mt-3">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div id='calendar' class="calendar_fpa col-lg-9"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="newBookingModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="newModalLabel">New Booking for:  <span id="startDate" name="startDate" class="badge badge-secondary text-white p-1"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modal-body">
+          <form action="{{ url_for('gui_blueprint._editbooking', id=0) }}" method="POST">
+          <div class="modal-body">
+            Choose a zone: {{ form.complex_select(class_="form-control") }}
+            <input type="hidden" id="start" name="start"/>
+          </div>
+          <div class="modal-footer">
+            {{ form.nextbtn(class_="btn btn-primary button_fpa") }}
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="lockedBookingModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="lmodal-title font-weight-bold text-dark text-center" id="lockedModalLabel">Locked</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id="modal-body p-2 m-5">
+            <h5 class="p-1 mx-1 font-weight-bold text-secondary text-center">Error: This date is currently locked.</h5>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="checkBookingModal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="checkModalLabel">Event Details: <span id="bookingTitle" name="startDate" class="badge p-1"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body bg-light">
+          <table>
+          <tr><td class="p-1 mx-1 font-weight-bold">Type</td><td><div id="bookingType"></div></td>
+          <tr><td class="p-1 mx-1 font-weight-bold">Info</td><td><div id="bookingInfo"></div></td>
+          <tr><td class="p-1 mx-1 font-weight-bold">Start</td><td><div id="bookingStart"></div></td>
+          <tr><td class="p-1 mx-1 font-weight-bold">End</td><td><div id="bookingEnd"></div></td>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+{% endblock %}

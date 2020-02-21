@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Edit My Profile{{ title }}{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+
+
+    <h5 class="card-header text-white bg-secondary">My Profile: {{ data.forename + " " + data.surname }}</h5>
+    <form action="{{ url_for('gui_blueprint._editprofile', id=data.id) }}" method="POST" novalidate class="text-center" style="color: #000000;">
+
+        <table class="form-group w-75 align-text-top">
+          <tr>
+            <td>{{ form.hidden_tag() }}</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.login_id.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.login_id(size=10, class_="form-control", readonly=True) }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.password.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ field_with_help(form.password(size=10, class_="form-control"), "Only enter a password if you wish to change it") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.forename.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.forename(size=32, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.surname.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.surname(size=64, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.email.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.email(size=32, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.comment.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.comment(rows=5, cols=20, class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td class="w-25 text-right mx-2 p-1 align-text-center">{{ form.vendor.label }}</td>
+            <td class="w-75 text-left mx-2 p-1">{{ form.vendor(class_="form-control") }}</td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td class="p-5">{{ form.savebtn(class_="btn btn-primary button_fpa") }} <button type=button name="cancel" id="cancel" class="btn btn-primary button_fpa" onclick="location.href='{{ url_for('gui_blueprint._index') }}'">Cancel</button></td>
+          </tr>
+        </table>
+    </form>
+
+
+{% endblock %}
